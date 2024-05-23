@@ -1,0 +1,59 @@
+body{
+  max-width: 750px;
+  margin: 0 auto!important;
+  background: #f8f8f8;
+}
+
+/* tabbar适配 */
+.van-tabbar{
+  max-width: 750px;
+  margin: 0 auto!important;
+  left: auto!important;
+}
+
+.van-nav-bar {
+  background-image: url("@/assets/nav-bg.png")!important;  
+}
+.van-nav-bar__title,.van-nav-bar__text {
+  color: #fff!important;
+}
+.van-nav-bar .van-icon {
+  color: #fff!important;
+}
+.van-overlay{
+  height: 100vh!important;
+}
+.van-tabbar--fixed {
+  position: fixed!important;
+}
+
+/* 网投样式设置 */
+.wangtou .van-tree-select__nav {
+  background: #fff!important;
+  flex: 0.6!important;
+  border-radius: 0 10px 0 0;
+}
+.wangtou .van-tree-select__content {
+  background: #efefef!important;
+  padding: 0 6px;
+}
+.wangtou{
+  .van-sidebar-item{
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .van-sidebar-item--select, .van-sidebar-item--select:active {
+    background-color: #daefff!important;
+  }
+  .van-tree-select__nav-item {
+    padding: 18px 0;
+    text-align: center;
+  }
+  .van-sidebar-item--select:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateY(0);
+  }
+}

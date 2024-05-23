@@ -1,0 +1,220 @@
+<template>
+  <div class="main-box">
+    <div class="header">
+        <div class="logo"><img src="@/assets/logo-tf.png" alt=""></div>
+        <div class="kefu"><img src="@/assets/kefu.png" alt=""></div>
+    </div>
+    <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+        <van-swipe-item><img src="@/assets/banner @2x.png" alt=""></van-swipe-item>
+    </van-swipe>
+    <div class="userinfo">
+        <div class="avatar"><img src="@/assets/avatar.png" alt=""></div>
+        <div class="info">
+            <span>昵称：哈哈</span>
+            <span>余额：<span class="money">￥0.0000</span></span>
+        </div>
+        <div class="caozuo">
+            <span><img src="@/assets/chongzhi.png" alt=""> 充值</span>
+            <span><img src="@/assets/tixian.png" alt="">提现</span>
+        </div>
+    </div>
+    <div class="tutorial">
+        <div class="gg"><img src="@/assets/gg.png" alt=""> 买卖详细教程</div>
+        <div class="more">更多</div>
+    </div>
+    
+    <div class="gamelist">
+        <van-swipe-cell class="items" v-for="(item, index) in gamelist" :key="index">
+        <div class="games">
+            <img :src="item.logo" alt=""> {{ item.title }}
+        </div>
+        <template #right>
+            <van-button square text="置顶" color="#ffb349" class="delete-button" />
+            <van-button square text="说明" color="#47ddd4" class="delete-button" />
+            <van-button square text="更多" color="#88d235" class="delete-button" />
+        </template>
+        </van-swipe-cell>
+    </div>
+  </div>
+  <tabbar></tabbar>
+</template>
+
+<script setup>
+ import { ref,onMounted } from 'vue'
+ import { showToast,showLoadingToast } from 'vant';
+ import tabbar from "@/components/tabbar/tabbar.vue";
+ import { getBanner,apigamelist,apiperiod } from "../../api/config";
+ import 'vant/es/swipe-cell/style'
+ //持久化
+import { gameinfoStore } from '@/stores';
+const gameStore = gameinfoStore()
+
+ //获取游戏列表
+ const gamelist = ref([])
+ const getgamelist = async () => {
+    showLoadingToast({
+        message: '加载中...',
+        forbidClick: true,
+        duration:500,
+    });
+    const res = await apigamelist();
+    if (res.data.code != 0) {
+        console.log("请求失败");
+        return;
+    }
+    gameStore.setgamelist(res.data.data)
+    gamelist.value = res.data.data;
+};
+
+ onMounted(() => {
+    getgamelist();
+});
+</script>
+
+<style scoped>
+.main-box {
+    margin-bottom: 100px;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url('@/assets/header-bg.png');
+    background-size: cover;
+    padding: 6px 20px;
+    .logo{
+        display: flex;
+        justify-content: space-between;
+        img{
+            width: 100px;
+        }
+    }
+    .kefu{
+        display: flex;
+        justify-content: space-between;
+        img{
+        width: 40px;
+    }
+    }
+
+}
+.my-swipe .van-swipe-item {
+    color: #fff;
+    font-size: 20px;    
+    text-align: center;
+    background-color: #fff;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+.userinfo {
+    background: #fff;
+    margin: 15px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow:0px 3px 0px #dbd5df;
+    .avatar{
+        img{
+            width: 60px;
+        }
+    }
+    .info {
+        display: flex;
+        flex-direction: column;
+        margin-right: auto;
+        margin-left: 10px;
+        span{
+            margin: 6px 0;
+        }
+    }
+    .caozuo {
+        display: flex;
+        flex-direction: column;
+        img{
+            width: 25px;
+            margin-right: 6px;
+        }
+        span{
+            display: flex;
+            align-items: center; 
+            margin: 6px 0;
+        }
+    }
+    .money{
+        color: #b04bc1;
+        font-weight: 600;
+    }
+}
+.tutorial{
+    background: #fff;
+    margin: 15px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 25px;
+    box-shadow:0px 3px 0px #dbd5df;
+    font-size: 18px;
+    color: #b04bc1;
+    .gg{
+        display: flex;
+        align-items: center;
+    }
+    img{
+        width: 35px;
+        margin-right: 10px;
+    }
+}
+.gamelist {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    .item{
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        background: #fff;
+        color: #323234;
+        border-radius: 6px;
+        box-shadow:0px 3px 0px #dbd5df;
+    }
+    img{
+        width: 50px;
+        margin-right: 10px;
+    }
+}
+
+.demo-swipe-cell {
+  user-select: none;
+
+  .van-card {
+    margin: 0;
+    background-color: var(--van-background-2);
+  }
+
+  .delete-button {
+    height: 100%;
+  }
+}
+.items{
+    background: #fff;
+    height: 60px;
+    border-bottom: 1px solid #eaeaea;
+    .games {
+        display: flex;
+        align-items: center;
+        height: 60px;
+        font-size: 18px;
+        margin-left: 15px;
+    }
+}
+.van-button--square{
+    height: 60px;
+}
+</style>
